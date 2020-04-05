@@ -83,7 +83,7 @@ var isMenuopen = 0;
 
 function initial(){
 	show_banner(2);
-	show_menu(5,15);
+	show_menu(5,11);
 	showmenu();
 	show_footer();
 	fill_adbyby_status(adbyby_status());
@@ -99,7 +99,17 @@ function initial(){
 }
 
 function showmenu(){
-showhide_div('adlink', found_app_koolproxy());
+	showhide_div('ssrlink', found_app_shadowsocks());
+	showhide_div('dsflink', found_app_dnsforwarder());
+	showhide_div('adblink', found_app_adbyby());
+	showhide_div('kplink', found_app_koolproxy());
+	showhide_div('sdnslink', found_app_smartdns()); 
+	showhide_div('adglink', found_app_adguardhome()); 
+	showhide_div('alidnslink', found_app_aliddns()); 
+	showhide_div('frplink', found_app_frp());
+	showhide_div('caddylink', found_app_caddy());
+	showhide_div('sculink', found_app_scutclient());
+	showhide_div('menlink', found_app_mentohust());
 }
 
 function textarea_scripts_enabled(v){
@@ -448,17 +458,43 @@ function changeBgColorrl(obj, num){
 						<div class="box well grad_colour_dark_blue">
 							<h2 class="box_head round_top"><#menu5_20_1#> - <#menu5_20#></h2>
 							<div class="round_bottom">
-							<div>
-                            <ul class="nav nav-tabs" style="margin-bottom: 10px;">
-								
-								<li class="active">
-                                    <a href="Advanced_adbyby.asp"><#menu5_20_1#></a>
-                                </li>
-								 <li id="adlink" style="display:none">
-                                    <a href="Advanced_koolproxy.asp"><#menu5_26_1#></a>
-                                </li>
-                            </ul>
-                        </div>
+<div>
+<ul class="nav nav-tabs" style="margin-bottom: 10px;">
+<li id="ssrlink" style="display:none">
+<a href="Shadowsocks.asp"><#menu5_16#></a>
+</li>
+<li id="dsflink" style="display:none">
+<a href="dns-forwarder.asp"><#menu5_15#></a>
+</li>
+<li class="active">
+<a href="Advanced_adbyby.asp"><#menu5_20_1#></a>
+</li>
+<li id="kplink" style="display:none">
+<a href="Advanced_koolproxy.asp"><#menu5_26_1#></a>
+</li>
+<li id="sdnslink" style="display:none">
+<a href="Advanced_smartdns.asp"><#menu5_24#></a>
+</li>
+<li id="adglink" style="display:none">
+<a href="Advanced_adguardhome.asp"><#menu5_28#></a>
+</li>
+<li id="alidnslink" style="display:none">
+<a href="Advanced_aliddns.asp"><#menu5_23#></a>
+</li>
+<li id="frplink" style="display:none">
+<a href="Advanced_frp.asp"><#menu5_25#></a>
+</li>
+<li id="caddylink" style="display:none">
+<a href="Advanced_caddy.asp"><#menu5_27#></a>
+</li>
+<li id="sculink" style="display:none">
+<a href="scutclient.asp"><#menu5_13#></a>
+</li>
+<li id="menlink" style="display:none">
+<a href="mentohust.asp"><#menu5_18#></a>
+</li>
+</ul>
+</div>
 								<div class="row-fluid">
 									<div id="tabMenu" class="submenuBlock"></div>
 									<div class="alert alert-info" style="margin: 10px;">广告屏蔽大师 Plus + 可以全面过滤各种横幅、弹窗、视频广告，同时阻止跟踪、隐私窃取及各种恶意网站<br />
@@ -550,9 +586,9 @@ function changeBgColorrl(obj, num){
 											</td>
 										</tr>
 										<tr>
-											<td colspan="3">
+											<td colspan="3" style="border-top: 0 none;">
 												<i class="icon-hand-right"></i> <a href="javascript:spoiler_toggle('script15')"><span>hosts规则下载列表(一行一个地址):</span></a>
-												<div id="script15">
+												<div id="script15" style="display:none;">
 													<textarea rows="8" wrap="off" spellcheck="false" maxlength="314571" class="span12" name="scripts.adbyby_host.sh" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("scripts.adbyby_host.sh",""); %></textarea>
 												</div>
 											</td>
@@ -680,23 +716,23 @@ function changeBgColorrl(obj, num){
                                             </td>
                                         </tr>
                                     </table>
-									<table class="table">
-										<tr>
-											<td colspan="3" >
-												<i class="icon-hand-right"></i> <a href="javascript:spoiler_toggle('script9')"><span>Plus+ 模式过滤的域名:</span></a>
-												<div id="script9">
-													<textarea rows="8" wrap="off" spellcheck="false" maxlength="314571" class="span12" name="scripts.adbyby_adhost.sh" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("scripts.adbyby_adhost.sh",""); %></textarea>
-												</div>
-											</td>
-										</tr>
-										<tr>
-											<td colspan="3" style="border-top: 0 none;">
-												<i class="icon-hand-right"></i> <a href="javascript:spoiler_toggle('script10')"><span>域名白名单:</span></a>
-												<div id="script10" style="display:none;">
-													<textarea rows="24" wrap="off" spellcheck="false" maxlength="314571" class="span12" name="scripts.adbyby_adesc.sh" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("scripts.adbyby_adesc.sh",""); %></textarea>
-												</div>
-											</td>
-										</tr>
+		<table class="table">
+	<tr>
+		<td colspan="3" style="border-top: 0 none;" >
+		<i class="icon-hand-right"></i> <a href="javascript:spoiler_toggle('script9')"><span>Plus+ 模式过滤的域名:</span></a>
+		<div id="script9" style="display:none;">
+		<textarea rows="8" wrap="off" spellcheck="false" maxlength="314571" class="span12" name="scripts.adbyby_adhost.sh" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("scripts.adbyby_adhost.sh",""); %></textarea>
+		</div>
+		</td>
+		</tr>
+	<tr>
+		<td colspan="3" style="border-top: 0 none;">
+		<i class="icon-hand-right"></i> <a href="javascript:spoiler_toggle('script10')"><span>域名白名单:</span></a>
+		<div id="script10" style="display:none;">
+		<textarea rows="24" wrap="off" spellcheck="false" maxlength="314571" class="span12" name="scripts.adbyby_adesc.sh" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("scripts.adbyby_adesc.sh",""); %></textarea>
+		</div>
+		</td>
+		</tr>
 										<tr>
 											<td colspan="3" style="border-top: 0 none;">
 												<i class="icon-hand-right"></i> <a href="javascript:spoiler_toggle('script11')"><span>IP黑名单:</span></a>

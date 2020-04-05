@@ -72,7 +72,14 @@ if [ $(nvram get check_mode) = "1" ];then
 	/usr/bin/shadowsocks.sh stop &
 	exit 0
 fi
-echo "$(date "+%Y-%m-%d %H:%M:%S") 检测到主服务器故障，切换到备用服务器。" >> /tmp/ssrplus.log
+	echo "$(date "+%Y-%m-%d %H:%M:%S") 检测到主服务器故障，切换到备用服务器。" >> /tmp/ssrplus.log
+if ["$(nvram get backup_server)" = "nill" ];then
+	echo "$(date "+%Y-%m-%d %H:%M:%S") 未设置备用服务器，结束SSR程序！" >> /tmp/ssrplus.log
+	nvram set ss_enable=0
+	nvram set check_mode=0
+	/usr/bin/shadowsocks.sh stop &
+	exit 0
+fi
 nvram set check_mode=1
 /usr/bin/shadowsocks.sh reserver &
 fi

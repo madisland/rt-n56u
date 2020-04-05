@@ -537,14 +537,14 @@ function updateDateTime()
                                                 </select>
                                             </td>
                                         </tr>
-                                        <tr>
+                                     <!--   <tr>
                                             <th><#PASS_LANG#></th>
                                             <td>
                                                 <select name="select_lang" id="select_lang" onchange="submit_language();">
                                                     <% shown_language_option(); %>
                                                 </select>
                                             </td>
-                                        </tr>
+                                        </tr>   -->
                                         <tr>
                                             <th><#Adm_System_help#></th>
                                             <td>

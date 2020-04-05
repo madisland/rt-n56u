@@ -42,7 +42,8 @@ $j(document).ready(function() {
 
 function initial(){
 	show_banner(2);
-	show_menu(5,19);
+	show_menu(5,11);
+	showmenu();
 	show_footer();
 show_caddy_stroage();
 show_caddy_dir();
@@ -113,6 +114,20 @@ function show_caddy_dir(){
 		}
 	}
 	$("caddy_dir").innerHTML = code;
+}
+
+function showmenu(){
+	showhide_div('ssrlink', found_app_shadowsocks());
+	showhide_div('dsflink', found_app_dnsforwarder());
+	showhide_div('adblink', found_app_adbyby());
+	showhide_div('kplink', found_app_koolproxy());
+	showhide_div('sdnslink', found_app_smartdns()); 
+	showhide_div('adglink', found_app_adguardhome()); 
+	showhide_div('alidnslink', found_app_aliddns()); 
+	showhide_div('frplink', found_app_frp());
+	showhide_div('caddylink', found_app_caddy());
+	showhide_div('sculink', found_app_scutclient());
+	showhide_div('menlink', found_app_mentohust());
 }
 
 function switch_caddy_type(){
@@ -186,8 +201,45 @@ if (b=="2"){
 				<div class="row-fluid">
 					<div class="span12">
 						<div class="box well grad_colour_dark_blue">
-							<h2 class="box_head round_top">在线文件管理</h2>
+							<h2 class="box_head round_top"><#menu5_27#> - <#menu5_27#></h2>
 							<div class="round_bottom">
+<div>
+<ul class="nav nav-tabs" style="margin-bottom: 10px;">
+<li id="ssrlink" style="display:none">
+<a href="Shadowsocks.asp"><#menu5_16#></a>
+</li>
+<li id="dsflink" style="display:none">
+<a href="dns-forwarder.asp"><#menu5_15#></a>
+</li>
+<li id="adblink" style="display:none">
+<a href="Advanced_adbyby.asp"><#menu5_20_1#></a>
+</li>
+<li id="kplink" style="display:none">
+<a href="Advanced_koolproxy.asp"><#menu5_26_1#></a>
+</li>
+<li id="sdnslink" style="display:none">
+<a href="Advanced_smartdns.asp"><#menu5_24#></a>
+</li>
+<li id="adglink" style="display:none">
+<a href="Advanced_adguardhome.asp"><#menu5_28#></a>
+</li>
+<li id="alidnslink" style="display:none">
+<a href="Advanced_aliddns.asp"><#menu5_23#></a>
+</li>
+<li id="frplink" style="display:none">
+<a href="Advanced_frp.asp"><#menu5_25#></a>
+</li>
+<li class="active">
+<a href="Advanced_caddy.asp"><#menu5_27#></a>
+</li>
+<li id="sculink" style="display:none">
+<a href="scutclient.asp"><#menu5_13#></a>
+</li>
+<li id="menlink" style="display:none">
+<a href="mentohust.asp"><#menu5_18#></a>
+</li>
+</ul>
+</div>
 								<div class="row-fluid">
 									<div id="tabMenu" class="submenuBlock"></div>
 									<div class="alert alert-info" style="margin: 10px;">File Browser是一个基于GO的轻量级文件管理系统支持登录系统 角色系统、在线PDF、图片、视频浏览、上传下载、打包下载等功能。
@@ -292,9 +344,9 @@ if (b=="2"){
 				</td>
 			</tr>
 										<tr id="row_post_wan_script">
-											<td colspan="2">
+											<td colspan="2" style="border-top: 0 none;">
 												<i class="icon-hand-right"></i> <a href="javascript:spoiler_toggle('script2')"><span>caddy脚本-不懂请不要乱改！！！</span></a>
-												<div id="script2">
+												<div id="script2" style="display:none;">
 													<textarea rows="18" wrap="off" spellcheck="false" maxlength="314571" class="span12" name="scripts.caddy_script.sh" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("scripts.caddy_script.sh",""); %></textarea>
 												</div>
 											</td>

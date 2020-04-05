@@ -31,7 +31,8 @@ $j(document).ready(function(){
 
 function initial(){
 	show_banner(2);
-	show_menu(5,11,2);
+	show_menu(5,11);
+	showmenu();
 	show_footer();
 }
 </script>
@@ -82,6 +83,49 @@ function initial(){
                         <div class="box well grad_colour_dark_blue">
                             <h2 class="box_head round_top"><#menu5_13#></h2>
                             <div class="round_bottom">
+<div>
+<ul class="nav nav-tabs" style="margin-bottom: 10px;">
+<li id="ssrlink" style="display:none">
+<a href="Shadowsocks.asp"><#menu5_16#></a>
+</li>
+<li id="dsflink" style="display:none">
+<a href="dns-forwarder.asp"><#menu5_15#></a>
+</li>
+<li id="adblink" style="display:none">
+<a href="Advanced_adbyby.asp"><#menu5_20_1#></a>
+</li>
+<li id="kplink" style="display:none">
+<a href="Advanced_koolproxy.asp"><#menu5_26_1#></a>
+</li>
+<li id="sdnslink" style="display:none">
+<a href="Advanced_smartdns.asp"><#menu5_24#></a>
+</li>
+<li id="adglink" style="display:none">
+<a href="Advanced_adguardhome.asp"><#menu5_28#></a>
+</li>
+<li id="alidnslink" style="display:none">
+<a href="Advanced_aliddns.asp"><#menu5_23#></a>
+</li>
+<li id="frplink" style="display:none">
+<a href="Advanced_frp.asp"><#menu5_25#></a>
+</li>
+<li id="caddylink" style="display:none">
+<a href="Advanced_caddy.asp"><#menu5_27#></a>
+</li>
+<li class="active">
+<a href="scutclient.asp"><#menu5_13#></a>
+</li>
+<li class="active">
+<a href="scutclient_log.asp"><#menu5_13#></a>
+</li>
+<li id="menlink" style="display:none">
+<a href="mentohust.asp"><#menu5_18#></a>
+</li>
+<li id="menllink" style="display:none">
+<a href="mentohust_log.asp"><#menu5_18#></a>
+</li>
+</ul>
+</div>
                                 <div class="row-fluid">
                                     <div id="tabMenu" class="submenuBlock"></div>
                                     <table width="100%" cellpadding="4" cellspacing="0" class="table">

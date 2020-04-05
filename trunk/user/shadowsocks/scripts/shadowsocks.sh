@@ -271,11 +271,12 @@ start_redir() {
 			ipt2socks -U -b 0.0.0.0 -4 -s 127.0.0.1 -p 10801 -l 1080 >/dev/null 2>&1 &
 		fi
 	fi
-	ss_switch=$(nvram get backup_server)
-	if [ $ss_switch != "nil" ]; then
+#	ss_switch=$(nvram get backup_server)
+#	if [ $ss_switch != "nil" ]; then
+	if [ $(nvram get ss_turn) = 1 ]; then
 		switch_time=$(nvram get ss_turn_s)
 		switch_timeout=$(nvram get ss_turn_ss)
-		#/usr/bin/ssr-switch start $switch_time $switch_timeout &
+		/usr/bin/ssr-switch start $switch_time $switch_timeout &
 		socks="-o"
 	fi
 	return $?
@@ -437,7 +438,7 @@ ssp_start() {
 		#start_AD
         start_dns
         start_local
-        start_watchcat
+	start_watchcat
         auto_update
         ENABLE_SERVER=$(nvram get global_server)
         [ "$ENABLE_SERVER" = "-1" ] && return 1
@@ -560,8 +561,11 @@ kill_process() {
 # ================================= 重启 SS ===============================
 ressp() {
 	BACKUP_SERVER=$(nvram get backup_server)
+#	GLOBAL_SERVER=`nvram get backup_server`
 	start_redir $BACKUP_SERVER
 	start_rules $BACKUP_SERVER
+#	start_redir
+#	start_rules
 	start_dns
 	start_local
 	start_watchcat

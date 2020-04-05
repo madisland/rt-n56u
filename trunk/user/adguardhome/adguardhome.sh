@@ -6,55 +6,19 @@ sed -i '/no-resolv/d' /etc/storage/dnsmasq/dnsmasq.conf
 sed -i '/server=127.0.0.1/d' /etc/storage/dnsmasq/dnsmasq.conf
 cat >> /etc/storage/dnsmasq/dnsmasq.conf << EOF
 no-resolv
-server=127.0.0.1#5335
+server=127.0.0.1#3553
+dns-forward-max=1000
 EOF
 /sbin/restart_dhcpd
-logger -t "AdGuardHome" "添加DNS转发到5335端口"
+logger -t "AdGuardHome" "添加DNS转发到3553端口"
 fi
 }
+
 del_dns() {
 sed -i '/no-resolv/d' /etc/storage/dnsmasq/dnsmasq.conf
-sed -i '/server=127.0.0.1#5335/d' /etc/storage/dnsmasq/dnsmasq.conf
+sed -i '/server=127.0.0.1#3553/d' /etc/storage/dnsmasq/dnsmasq.conf
+sed -i '/dns-forward-max=1000/d' /etc/storage/dnsmasq/dnsmasq.conf
 /sbin/restart_dhcpd
-}
-
-set_iptable()
-{
-    if [ "$(nvram get adg_redirect)" = 2 ]; then
-	IPS="`ifconfig | grep "inet addr" | grep -v ":127" | grep "Bcast" | awk '{print $2}' | awk -F : '{print $2}'`"
-	for IP in $IPS
-	do
-		iptables -t nat -A PREROUTING -p tcp -d $IP --dport 53 -j REDIRECT --to-ports 5335 >/dev/null 2>&1
-		iptables -t nat -A PREROUTING -p udp -d $IP --dport 53 -j REDIRECT --to-ports 5335>/dev/null 2>&1
-	done
-
-	IPS="`ifconfig | grep "inet6 addr" | grep -v " fe80::" | grep -v " ::1" | grep "Global" | awk '{print $3}'`"
-	for IP in $IPS
-	do
-		ip6tables -t nat -A PREROUTING -p tcp -d $IP --dport 53 -j REDIRECT --to-ports 5335 >/dev/null 2>&1
-		ip6tables -t nat -A PREROUTING -p udp -d $IP --dport 53 -j REDIRECT --to-ports 5335 >/dev/null 2>&1
-	done
-    logger -t "AdGuardHome" "重定向53端口"
-    fi
-}
-
-clear_iptable()
-{
-	OLD_PORT="5335"
-	IPS="`ifconfig | grep "inet addr" | grep -v ":127" | grep "Bcast" | awk '{print $2}' | awk -F : '{print $2}'`"
-	for IP in $IPS
-	do
-		iptables -t nat -D PREROUTING -p udp -d $IP --dport 53 -j REDIRECT --to-ports $OLD_PORT >/dev/null 2>&1
-		iptables -t nat -D PREROUTING -p tcp -d $IP --dport 53 -j REDIRECT --to-ports $OLD_PORT >/dev/null 2>&1
-	done
-
-	IPS="`ifconfig | grep "inet6 addr" | grep -v " fe80::" | grep -v " ::1" | grep "Global" | awk '{print $3}'`"
-	for IP in $IPS
-	do
-		ip6tables -t nat -D PREROUTING -p udp -d $IP --dport 53 -j REDIRECT --to-ports $OLD_PORT >/dev/null 2>&1
-		ip6tables -t nat -D PREROUTING -p tcp -d $IP --dport 53 -j REDIRECT --to-ports $OLD_PORT >/dev/null 2>&1
-	done
-	
 }
 
 getconfig(){
@@ -62,14 +26,14 @@ adg_file="/etc/storage/adg.sh"
 if [ ! -f "$adg_file" ] || [ ! -s "$adg_file" ] ; then
 	cat > "$adg_file" <<-\EEE
 bind_host: 0.0.0.0
-bind_port: 3030
+bind_port: 3000
 auth_name: admin
 auth_pass: admin
 language: zh-cn
 rlimit_nofile: 0
 dns:
   bind_host: 0.0.0.0
-  port: 5335
+  port: 3553
   protection_enabled: true
   filtering_enabled: true
   blocking_mode: nxdomain
@@ -79,7 +43,8 @@ dns:
   ratelimit_whitelist: []
   refuse_any: true
   bootstrap_dns:
-  - 1.1.1.1
+  - 119.29.29.29
+  - 223.5.5.5
   all_servers: true
   allowed_clients: []
   disallowed_clients: []
@@ -90,7 +55,8 @@ dns:
   safebrowsing_enabled: false
   resolveraddress: ""
   upstream_dns:
-  - 1.1.1.1
+  - 119.29.29.29
+  - 223.5.5.5
 tls:
   enabled: false
   server_name: ""
@@ -116,6 +82,18 @@ filters:
   url: https://www.malwaredomainlist.com/hostslist/hosts.txt
   name: MalwareDomainList.com Hosts List
   id: 4
+- enabled: true
+  url: https://raw.githubusercontent.com/privacy-protection-tools/anti-AD/master/anti-ad-easylist.txt
+  name: Anti-AD
+  id: 1586053714
+- enabled: true
+  url: https://raw.githubusercontent.com/vokins/yhosts/master/hosts.txt
+  name: yHosts
+  id: 1586053715
+- enabled: true
+  url: https://raw.githubusercontent.com/Perflyst/PiHoleBlocklist/master/SmartTV-AGH.txt
+  name: Perflyst and Dandelion Sprout's Smart-TV Blocklist for AdGuard Home
+  id: 1586053716
 user_rules: []
 dhcp:
   enabled: false
@@ -137,42 +115,52 @@ fi
 }
 
 dl_adg(){
-logger -t "AdGuardHome" "下载AdGuardHome"
-#wget --no-check-certificate -O /tmp/AdGuardHome.tar.gz https://github.com/AdguardTeam/AdGuardHome/releases/download/v0.101.0/AdGuardHome_linux_mipsle.tar.gz
-curl -k -s -o /tmp/AdGuardHome/AdGuardHome --connect-timeout 10 --retry 3 https://cdn.jsdelivr.net/gh/chongshengB/rt-n56u/trunk/user/adguardhome/AdGuardHome
-if [ ! -f "/tmp/AdGuardHome/AdGuardHome" ]; then
-logger -t "AdGuardHome" "AdGuardHome下载失败，请检查是否能正常访问github!程序将退出。"
-nvram set adg_enable=0
-exit 0
-else
-logger -t "AdGuardHome" "AdGuardHome下载成功。"
-chmod 777 /tmp/AdGuardHome/AdGuardHome
-fi
+	logger -t "AdGuardHome" "自动下载AdGuardHome程序"
+	mkdir -p /tmp/AdGuardHome
+###从Code.aliyun下载
+	wget --no-check-certificate -O /tmp/AdGuardHome/AdGuardHome https://code.aliyun.com/madisland/mipsel_file/raw/dbf4d10672ab930203908daffa0c3c693e3c613d/AdGuardHome
+	if [ ! -f "/tmp/AdGuardHome/AdGuardHome" ];then
+		logger -t "AdGuardHome" "AdGuardHome下载失败，尝试从Github官方下载最新版程序!"
+###从Github下载最新版本
+		tag="$( wget -T 5 -t 3 --user-agent "$user_agent" --max-redirect=0  https://github.com/AdguardTeam/AdGuardHome/releases/latest  2>&1 | grep releases/tag | awk -F '/' '{print $NF}' | awk -F ' ' '{print $1}' )"
+		[ -z "$tag" ] && tag="$( wget -T 5 -t 3 --user-agent "$user_agent" --quiet --output-document=-  https://github.com/AdguardTeam/AdGuardHome/releases/latest  2>&1 | grep '<a href="/AdguardTeam/AdGuardHome/tree/'  |head -n1 | awk -F '/' '{print $NF}' | awk -F '"' '{print $1}' )"
+		wget --no-check-certificate -O /tmp/AdGuardHome.tar.gz https://github.com/AdguardTeam/AdGuardHome/releases/download/$tag/AdGuardHome_linux_mipsle.tar.gz
+		if [ ! -f "/tmp/AdGuardHome.tar.gz" ]; then
+			logger -t "AdGuardHome" "AdGuardHome下载失败，请检查网络,程序将退出。"
+			nvram set adg_enable=0
+	       		exit 0
+		else
+			logger -t "AdGuardHome" "AdGuardHome下载成功。"
+			tar -xzvf /tmp/AdGuardHome.tar.gz -C /tmp
+			rm -f /tmp/AdGuardHome.tar.gz /tmp/AdGuardHome/LICENSE.txt /tmp/AdGuardHome/README.md
+			chmod 777 /tmp/AdGuardHome/AdGuardHome
+		fi
+	else
+		logger -t "AdGuardHome" "AdGuardHome下载成功。"
+		chmod 777 /tmp/AdGuardHome/AdGuardHome
+	fi
 }
 
 start_adg(){
-    mkdir -p /tmp/AdGuardHome
-	mkdir -p /etc/storage/AdGuardHome
 	if [ ! -f "/tmp/AdGuardHome/AdGuardHome" ]; then
+	del_dns
 	dl_adg
 	fi
 	getconfig
 	change_dns
-	set_iptable
 	logger -t "AdGuardHome" "运行AdGuardHome"
-	eval "/tmp/AdGuardHome/AdGuardHome -c $adg_file -w /tmp/AdGuardHome -v" &
+	eval "/tmp/AdGuardHome/AdGuardHome -c $adg_file -w /tmp/AdGuardHome" &
 
 }
 stop_adg(){
-rm -rf /tmp/AdGuardHome
 killall -9 AdGuardHome
 del_dns
-clear_iptable
 }
 
 
 case $1 in
 start)
+	stop_adg
 	start_adg
 	;;
 stop)

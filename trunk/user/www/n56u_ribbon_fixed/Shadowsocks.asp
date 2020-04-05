@@ -67,7 +67,8 @@ node_global_max = 0;
 
 function initial(){
 	show_banner(2);
-	show_menu(13,13,0);
+	show_menu(5,11);
+	showmenu();
 	show_footer();
 	fill_ss_status(shadowsocks_status());
 	$("chnroute_count").innerHTML = '<#menu5_17_3#>' + chnroute_count() ;
@@ -110,6 +111,21 @@ function initial(){
 		document.getElementById('ss_schedule_time_tr').style.display = "none";
 	}
 }
+
+function showmenu(){
+	showhide_div('ssrlink', found_app_shadowsocks());
+	showhide_div('dsflink', found_app_dnsforwarder());
+	showhide_div('adblink', found_app_adbyby());
+	showhide_div('kplink', found_app_koolproxy());
+	showhide_div('sdnslink', found_app_smartdns()); 
+	showhide_div('adglink', found_app_adguardhome()); 
+	showhide_div('alidnslink', found_app_aliddns()); 
+	showhide_div('frplink', found_app_frp());
+	showhide_div('caddylink', found_app_caddy());
+	showhide_div('sculink', found_app_scutclient());
+	showhide_div('menlink', found_app_mentohust());
+}
+
 function textarea_scripts_enabled(v){
 //inputCtrl(document.form['scripts.ss.dom.sh'], v);
 //inputCtrl(document.form['scripts.ss.ip.sh'], v);
@@ -467,6 +483,7 @@ success:function(res){
 // 渲染父节点  obj 需要渲染的数据 keyStr key需要去除的字符串
 var keyStr="ssconf_basic_json_";
 var nodeList = document.getElementById("nodeList"); // 获取节点
+var bnodeList = document.getElementById("b_nodeList"); // 获取节点
 var unodeList = document.getElementById("u_nodeList"); // 获取节点
 for(var key  in  db_ss){ // 遍历对象
 var optionObj = JSON.parse(db_ss[key] ); // 字符串转为对象
@@ -474,6 +491,7 @@ if(optionObj.ping != "failed"){   //过滤ping不通的节点
 var text = '[ '+ (optionObj.type ? optionObj.type:"类型获取失败") +' ] ' + (optionObj.alias?optionObj.alias:"名字获取失败"); // 判断下怕获取失败 ，括号是运算的问题
  // 添加 
 nodeList.options.add(new Option(text, key.replace(keyStr,''))); // 通过 replacce把不要的字符去掉
+bnodeList.options.add(new Option(text, key.replace(keyStr,''))); // 通过 replacce把不要的字符去掉
 unodeList.options.add(new Option(text, key.replace(keyStr,''))); // 通过 replacce把不要的字符去掉
 
 $j('#nodeList>option').sort(function (a, b) {
@@ -484,6 +502,15 @@ $j('#nodeList>option').sort(function (a, b) {
 	return 0;
 }).appendTo('#nodeList');
 $j('#nodeList>option').eq(0).attr("selected", "selected");
+//backup 列表
+$j('#b_nodeList>option').sort(function (a, b) {
+	var aText = $j(a).val() * 1;
+	var bText = $j(b).val() * 1;
+	if (aText > bText) return -1;
+	if (aText < bText) return 1;
+	return 0;
+}).appendTo('#b_nodeList');
+$j('#b_nodeList>option').eq(0).attr("selected", "selected");
 //udp列表
 $j('#u_nodeList>option').sort(function (a, b) {
 	var aText = $j(a).val() * 1;
@@ -494,8 +521,10 @@ $j('#u_nodeList>option').sort(function (a, b) {
 }).appendTo('#u_nodeList');
 $j('#u_nodeList>option').eq(0).attr("selected", "selected");
 //$j('#nodeList').selectpicker('val', '<% nvram_get_x("","global_server"); %>'); //主服务器列表默认
+//$j('#b_nodeList').selectpicker('val', '<% nvram_get_x("","backup_server"); %>'); //UDP服务器列表默认
 //$j('#u_nodeList').selectpicker('val', '<% nvram_get_x("","udp_relay_server"); %>'); //UDP服务器列表默认
 document.form.global_server.value = '<% nvram_get_x("","global_server"); %>';
+document.form.backup_server.value = '<% nvram_get_x("","backup_server"); %>';
 document.form.udp_relay_server.value = '<% nvram_get_x("","udp_relay_server"); %>';
 }
 } 
@@ -1147,6 +1176,12 @@ function showsdlinkList() {
 }
 
 function showsudlinkList() {
+	var key = "ssconf_basic_json_" + document.getElementById("b_nodeList").value;
+	var result = JSON.parse(db_ss[key]);
+	document.getElementById("b_type").value = result.type;
+}
+
+function showsudlinkList() {
 	var key = "ssconf_basic_json_" + document.getElementById("u_nodeList").value;
 	var result = JSON.parse(db_ss[key]);
 	document.getElementById("ud_type").value = result.type;
@@ -1196,6 +1231,7 @@ function showsudlinkList() {
 <input type="hidden" name="action_script" value="">
 <input type="hidden" name="ssp_staticnum_x_0" value="<% nvram_get_x("SspList", "ssp_staticnum_x"); %>" readonly="1" />
 <input type="hidden" id="d_type" name="d_type" value="<% nvram_get_x("","d_type"); %>">
+<input type="hidden" id="b_type" name="b_type" value="<% nvram_get_x("","b_type"); %>">
 <input type="hidden" id="ud_type" name="ud_type" value="<% nvram_get_x("","ud_type"); %>">
 <input type="hidden" name="ss_schedule" value="<% nvram_get_x("", "ss_schedule"); %>" disabled>
 <input type="hidden" name="ss_schedule_enable" value="<% nvram_get_x("", "ss_schedule_enable"); %>">
@@ -1220,6 +1256,43 @@ function showsudlinkList() {
 		<div class="box well grad_colour_dark_blue">
 			<h2 class="box_head round_top"><#menu5_16#> - ShadowSocksR Plus+</h2>
 			<div class="round_bottom">
+<div>
+<ul class="nav nav-tabs" style="margin-bottom: 10px;">
+<li class="active">
+<a href="Shadowsocks.asp"><#menu5_16#></a>
+</li>
+<li id="dsflink" style="display:none">
+<a href="dns-forwarder.asp"><#menu5_15#></a>
+</li>
+<li id="adblink" style="display:none">
+<a href="Advanced_adbyby.asp"><#menu5_20_1#></a>
+</li>
+<li id="kplink" style="display:none">
+<a href="Advanced_koolproxy.asp"><#menu5_26_1#></a>
+</li>
+<li id="sdnslink" style="display:none">
+<a href="Advanced_smartdns.asp"><#menu5_24#></a>
+</li>
+<li id="adglink" style="display:none">
+<a href="Advanced_adguardhome.asp"><#menu5_28#></a>
+</li>
+<li id="alidnslink" style="display:none">
+<a href="Advanced_aliddns.asp"><#menu5_23#></a>
+</li>
+<li id="frplink" style="display:none">
+<a href="Advanced_frp.asp"><#menu5_25#></a>
+</li>
+<li id="caddylink" style="display:none">
+<a href="Advanced_caddy.asp"><#menu5_27#></a>
+</li>
+<li id="sculink" style="display:none">
+<a href="scutclient.asp"><#menu5_13#></a>
+</li>
+<li id="menlink" style="display:none">
+<a href="mentohust.asp"><#menu5_18#></a>
+</li>
+</ul>
+</div>
 				<div>
 					<ul class="nav nav-tabs" style="margin-bottom: 10px;">
 						<li class="active">
@@ -1257,7 +1330,7 @@ function showsudlinkList() {
 			<tr> <th>客户端<#running_status#></th>
 				<td id="ss_status"></td>
 			</tr></th> </tr>
-			<tr id="row_pdnsd_run" style="display:none;"> <th>PDNSD<#running_status#></th>
+			<tr id="row_pdnsd_run" style="display:none;"> <th>pdnsd<#running_status#></th>
 				<td id="pdnsd_status"></td>
 			</tr></th> </tr>
 			<tr> <th><#InetControl#></th>
@@ -1283,6 +1356,13 @@ function showsudlinkList() {
 				<td>
 					<select name="global_server" id="nodeList" style="width: 200px;" onchange="showsdlinkList()">
 					<option value="nil" >停用</option>         
+					</select>
+				</td>
+			</tr>
+			<tr> <th>故障转移服务器</th>
+				<td>
+					<select name="backup_server" id="b_nodeList" style="width: 200px;" onchange="showsdlinkList()">
+					<option value="nil" >停用</option>
 					</select>
 				</td>
 			</tr>
@@ -1708,7 +1788,7 @@ function showsudlinkList() {
 </tr>-->
 	<tr>
 		<td style="border: 0 none; padding: 0px;"><center><input name="ManualRULESList2" id="ManualRULESList2" type="button" class="btn btn-primary" onclick="add_ss();" style="width: 219px" value="保存节点"/></center></td>
-<td style="border: 0 none; padding: 0px;"><center><input name="button" type="button" class="btn btn-primary" id="close_add" style="width: 219px" value="取消"/></center></td>
+		<td style="border: 0 none; padding: 0px;"><center><input name="button" type="button" class="btn btn-primary" id="close_add" style="width: 219px" value="取消"/></center></td>
 	</tr>
 </table>
 </div>
@@ -1789,12 +1869,11 @@ function showsudlinkList() {
 </div>
 <div id="wnd_ss_ssl" style="display:none">
 	<table width="100%" cellpadding="4" cellspacing="0" class="table">
-		<tr> <th colspan="2" style="background-color: #E3E3E3;">节点故障自动切换设置</th> </tr>
-		<tr> <th>启用进程自动守护</th>
+	<tr> <th>启用进程自动守护</th>
 			<td>
 				<div class="main_itoggle">
 					<div id="ss_watchcat_on_of">
-						<input type="checkbox" id="ss_watchcat_fake" <% nvram_match_x("", "ss_watchcat", "1", "value=1 checked"); %><% nvram_match_x("", "ss_watchcat", "0", "value=0"); %>>
+	<input type="checkbox" id="ss_watchcat_fake" <% nvram_match_x("", "ss_watchcat", "1", "value=1 checked"); %><% nvram_match_x("", "ss_watchcat","0","value=0"); %>>
 					</div>
 				</div>
 				<div style="position: absolute; margin-left: -10000px;">
@@ -1803,30 +1882,32 @@ function showsudlinkList() {
 				</div>
 			</td>
 		</tr>
-<!--  <tr> <th>启用自动切换</th>
-<td>
-<div class="main_itoggle">
-<div id="ss_turn_on_of">
-<input type="checkbox" id="ss_turn_fake" <% nvram_match_x("", "ss_turn", "1", "value=1 checked"); %><% nvram_match_x("", "ss_turn", "0", "value=0"); %>>
-</div>
-</div>
-<div style="position: absolute; margin-left: -10000px;">
-<input type="radio" value="1" name="ss_turn" id="ss_turn_1" <% nvram_match_x("", "ss_turn", "1", "checked"); %>><#checkbox_Yes#>
-<input type="radio" value="0" name="ss_turn" id="ss_turn_0" <% nvram_match_x("", "ss_turn", "0", "checked"); %>><#checkbox_No#>
-</div>
-</td>
-</tr>
--->
-<tr> <th width="50%">自动切换检查周期(秒)</th>
-	<td>
+	<tr> <th colspan="2" style="background-color: #E3E3E3;">节点故障自动切换设置</th> </tr>
+
+	<tr> <th>启用故障自动切换</th>
+		<td>
+		<div class="main_itoggle">
+		<div id="ss_turn_on_of">
+	<input type="checkbox" id="ss_turn_fake" <% nvram_match_x("", "ss_turn", "1", "value=1 checked"); %><% nvram_match_x("", "ss_turn", "0", "value=0"); %>>
+		</div>
+		</div>
+		<div style="position: absolute; margin-left: -10000px;">
+		<input type="radio" value="1" name="ss_turn" id="ss_turn_1" <% nvram_match_x("", "ss_turn", "1", "checked"); %>><#checkbox_Yes#>
+		<input type="radio" value="0" name="ss_turn" id="ss_turn_0" <% nvram_match_x("", "ss_turn", "0", "checked"); %>><#checkbox_No#>
+		</div>
+		</td>
+		</tr>
+
+	<tr> <th width="50%">自动切换检查周期(秒)</th>
+		<td>
 		<input type="text" class="input" size="15" name="ss_turn_s" style="width: 200px"  value="<% nvram_get_x("","ss_turn_s"); %>" />
-	</td>
-</tr>
-<tr> <th width="50%">切换检查超时时间(秒)</th>
-	<td>
+		</td>
+		</tr>
+	<tr> <th width="50%">切换检查超时时间(秒)</th>
+		<td>
 		<input type="text" class="input" size="15" name="ss_turn_ss" style="width: 200px" value="<% nvram_get_x("", "ss_turn_ss"); %>">
-	</td>
-</tr>
+		</td>
+		</tr>
 <!--
 <tr> <th width="50%">自定义国内IP更新地址:</th>
 	<td>
@@ -1949,49 +2030,49 @@ function showsudlinkList() {
 			</td>
 		</tr>
 		<tr>
-			<td colspan="3" >
+			<td colspan="3" style="border-top: 0 none;">
 				<i class="icon-hand-right"></i> <a href="javascript:spoiler_toggle('script8')"><span>不走SS代理的LAN IP:</span></a>
-				<div id="script8">
+				<div id="script8" style="display:none;">
 					<textarea rows="8" wrap="off" spellcheck="false" maxlength="314571" class="span12" name="scripts.ss_lan_ip.sh" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("scripts.ss_lan_ip.sh",""); %></textarea>
 				</div>
 			</td>
 		</tr>
 		<tr>
-			<td colspan="3" >
+			<td colspan="3" style="border-top: 0 none;">
 				<i class="icon-hand-right"></i> <a href="javascript:spoiler_toggle('script9')"><span>强制走SS代理的LAN IP:</span></a>
-				<div id="script9">
+				<div id="script9" style="display:none;">
 					<textarea rows="8" wrap="off" spellcheck="false" maxlength="314571" class="span12" name="scripts.ss_lan_bip.sh" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("scripts.ss_lan_bip.sh",""); %></textarea>
 				</div>
 			</td>
 		</tr>				
 		<tr>
-			<td colspan="3" >
+			<td colspan="3" style="border-top: 0 none;">
 				<i class="icon-hand-right"></i> <a href="javascript:spoiler_toggle('script11')"><span>强制走SS代理的WAN IP:</span></a>
-				<div id="script11">
+				<div id="script11" style="display:none;">
 					<textarea rows="8" wrap="off" spellcheck="false" maxlength="314571" class="span12" name="scripts.ss_ip.sh" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("scripts.ss_ip.sh",""); %></textarea>
 				</div>
 			</td>
 		</tr>
 		<tr>
-			<td colspan="3" >
+			<td colspan="3" style="border-top: 0 none;">
 				<i class="icon-hand-right"></i> <a href="javascript:spoiler_toggle('script12')"><span>不走SS代理的WAN IP:</span></a>
-				<div id="script12">
+				<div id="script12" style="display:none;">
 					<textarea rows="8" wrap="off" spellcheck="false" maxlength="314571" class="span12" name="scripts.ss_wan_ip.sh" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("scripts.ss_wan_ip.sh",""); %></textarea>
 				</div>
 			</td>
 		</tr>
 		<tr>
-			<td colspan="3" >
+			<td colspan="3" style="border-top: 0 none;">
 				<i class="icon-hand-right"></i> <a href="javascript:spoiler_toggle('script10')"><span>强制走SS代理的域名:</span></a>
-				<div id="script10">
+				<div id="script10" style="display:none;">
 					<textarea rows="8" wrap="off" spellcheck="false" maxlength="314571" class="span12" name="scripts.ss_dom.sh" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("scripts.ss_dom.sh",""); %></textarea>
 				</div>
 			</td>
 		</tr>
 		<tr>
-			<td colspan="3" >
+			<td colspan="3" style="border-top: 0 none;">
 				<i class="icon-hand-right"></i> <a href="javascript:spoiler_toggle('script15')"><span>不走SS代理的域名:</span></a>
-				<div id="script15">
+				<div id="script15" style="display:none;">
 					<textarea rows="8" wrap="off" spellcheck="false" maxlength="314571" class="span12" name="scripts.uss_dom.sh" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("scripts.uss_dom.sh",""); %></textarea>
 				</div>
 			</td>

@@ -1067,6 +1067,7 @@
     struct variable variables_AdguardHomeConf[] = {
 			{"adg_enable", "", NULL, EVM_RESTART_ADGUARDHOME},
 			{"adg_redirect", "", NULL, EVM_RESTART_ADGUARDHOME},
+			{"scripts.adg.sh", "File", NULL, EVM_RESTART_ADGUARDHOME},
 			{0,0,0,0}
 	};
 #endif
@@ -1141,21 +1142,17 @@
 #endif
 
     struct variable variables_DwebConf[] = {
-	        {"w_ai", "", NULL, FALSE},
+	        	{"w_ai", "", NULL, FALSE},
 			{"w_vpn_s", "", NULL, FALSE},
 			{"w_vpn_c", "", NULL, FALSE},
 			{"w_wnet", "", NULL, FALSE},
 			{"w_sys", "", NULL, FALSE},
+			{"w_2", "", NULL, FALSE},
+			{"w_5", "", NULL, FALSE},
 			{"w_usb", "", NULL, FALSE},
 			{"w_net", "", NULL, FALSE},
 			{"w_log", "", NULL, FALSE},
-			{"w_scu", "", NULL, FALSE},
-			{"w_dnsf", "", NULL, FALSE},
-			{"w_ss", "", NULL, FALSE},
-			{"w_men", "", NULL, FALSE},
-			{"w_adbyby", "", NULL, FALSE},
-			{"w_pdnsd", "", NULL, FALSE},
-
+			{"w_en", "", NULL, FALSE},
 	};
 	struct variable variables_WLANConfig11b[] = {
 			{"rt_ssid", "", NULL, EVM_RESTART_WIFI2},

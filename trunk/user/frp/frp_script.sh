@@ -1,7 +1,6 @@
 #!/bin/sh
 #from hiboy
 killall frpc frps
-mkdir -p /tmp/frp
 #启动frp功能后会运行以下脚本
 #frp项目地址教程: https://github.com/fatedier/frp/blob/master/README_zh.md
 #请自行修改 token 用于对客户端连接进行身份验证
@@ -51,9 +50,9 @@ EOF
 frpc_enable=`nvram get frpc_enable`
 frps_enable=`nvram get frps_enable`
 if [ "$frpc_enable" = "1" ] ; then
-    frpc -c /tmp/frp/myfrpc.ini 2>&1 &
+    /tmp/frp/frpc -c /tmp/frp/myfrpc.ini 2>&1 &
 fi
 if [ "$frps_enable" = "1" ] ; then
-    frps -c /tmp/frp/myfrps.ini 2>&1 &
+    /tmp/frp/frps -c /tmp/frp/myfrps.ini 2>&1 &
 fi
  

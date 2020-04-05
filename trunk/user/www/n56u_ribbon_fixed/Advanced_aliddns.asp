@@ -36,7 +36,8 @@ $j(document).ready(function() {
 
 function initial(){
 	show_banner(2);
-	show_menu(5,17);
+	show_menu(5,11);
+	showmenu();
 	show_footer();
 
 	change_aliddns_enable_bridge(1);
@@ -64,6 +65,20 @@ function applyRule(){
 
 function done_validating(action){
 	refreshpage();
+}
+
+function showmenu(){
+	showhide_div('ssrlink', found_app_shadowsocks());
+	showhide_div('dsflink', found_app_dnsforwarder());
+	showhide_div('adblink', found_app_adbyby());
+	showhide_div('kplink', found_app_koolproxy());
+	showhide_div('sdnslink', found_app_smartdns()); 
+	showhide_div('adglink', found_app_adguardhome()); 
+	showhide_div('alidnslink', found_app_aliddns()); 
+	showhide_div('frplink', found_app_frp());
+	showhide_div('caddylink', found_app_caddy());
+	showhide_div('sculink', found_app_scutclient());
+	showhide_div('menlink', found_app_mentohust());
 }
 
 function change_aliddns_enable_bridge(mflag){
@@ -131,17 +146,53 @@ function change_aliddns_enable_bridge(mflag){
 				<div class="row-fluid">
 					<div class="span12">
 						<div class="box well grad_colour_dark_blue">
-							<h2 class="box_head round_top"><#menu5_23#> - <#menu5_30#></h2>
-							<div class="round_bottom">
-								<div class="row-fluid">
-									<div id="tabMenu" class="submenuBlock"></div>
+						<h2 class="box_head round_top"><#menu5_23#> - <#menu5_30#></h2>
+						<div class="round_bottom">
+<div>
+<ul class="nav nav-tabs" style="margin-bottom: 10px;">
+<li id="ssrlink" style="display:none">
+<a href="Shadowsocks.asp"><#menu5_16#></a>
+</li>
+<li id="dsflink" style="display:none">
+<a href="dns-forwarder.asp"><#menu5_15#></a>
+</li>
+<li id="adblink" style="display:none">
+<a href="Advanced_adbyby.asp"><#menu5_20_1#></a>
+</li>
+<li id="kplink" style="display:none">
+<a href="Advanced_koolproxy.asp"><#menu5_26_1#></a>
+</li>
+<li id="sdnslink" style="display:none">
+<a href="Advanced_smartdns.asp"><#menu5_24#></a>
+</li>
+<li id="adglink" style="display:none">
+<a href="Advanced_adguardhome.asp"><#menu5_28#></a>
+</li>
+<li class="active">
+<a href="Advanced_aliddns.asp"><#menu5_23#></a>
+</li>
+<li id="frplink" style="display:none">
+<a href="Advanced_frp.asp"><#menu5_25#></a>
+</li>
+<li id="caddylink" style="display:none">
+<a href="Advanced_caddy.asp"><#menu5_27#></a>
+</li>
+<li id="sculink" style="display:none">
+<a href="scutclient.asp"><#menu5_13#></a>
+</li>
+<li id="menlink" style="display:none">
+<a href="mentohust.asp"><#menu5_18#></a>
+</li>
+</ul>
+</div>
+					
+	<div class="row-fluid">
+						<div id="tabMenu" class="submenuBlock"></div>
 									<div class="alert alert-info" style="margin: 10px;">使用 Aliddns 实现顶级个人域名的 ddns 服务。 <a href="https://www.aliyun.com" target="blank"><i><u>Aliddns 主页</u></i></a>
 												<ul style="padding-top:5px;margin-top:10px;float: left;">
 												<li><a href="https://github.com/kyriosli/koolshare-aliddns" target="blank"><i><u>Aliddns 项目地址：https://github.com/kyriosli/koolshare-aliddns</u></i></a></li>
 												<li><a href="http://koolshare.cn/thread-64703-1-1.html" target="blank"><i><u>Aliddns 使用帮助：http://koolshare.cn/thread-64703-1-1.html</u></i></a></li>
 												<li>使用前需要将域名添加到 aliyun 中，并添加一条A记录，使用之后将自动更新ip</li>
-												<li>点 <a href="https://help.aliyun.com/knowledge_detail/39844.html" target="blank"><i><u>这里</u></i></a> 查看不同域名注册商修改 DNS 方法。</li>
-												<li>点 <a href="https://help.aliyun.com/knowledge_detail/38738.html" target="blank"><i><u>这里</u></i></a> 查看如何获取 Aliddns 的 Access Key ID 和 Access Key Secret。</li>
 												</ul>
 									</div>
 

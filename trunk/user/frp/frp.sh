@@ -28,8 +28,45 @@ check_net()
 	fi
 }
 
+dl_frp ()
+{
+	mkdir -p /tmp/frp
+        logger -t "frp" "自动下载最新版frp程序"
+###从Code.aliyun下载
+	wget --no-check-certificate -O /tmp/frp/frpc https://code.aliyun.com/madisland/mipsel_file/raw/dbf4d10672ab930203908daffa0c3c693e3c613d/frpc && wget --no-check-certificate -O /tmp/frp/frps https://code.aliyun.com/madisland/mipsel_file/raw/dbf4d10672ab930203908daffa0c3c693e3c613d/frps
+	if [ ! -f "/tmp/frp/frpc" ] || [ ! -f "/tmp/frp/frps" ] ; then
+	logger -t "frp" "frp下载失败，尝试从Github下载最新版程序!"
+####从GitHub下载
+	tag1="$( wget -T 5 -t 3 --user-agent "$user_agent" --max-redirect=0  https://github.com/fatedier/frp/releases/latest  2>&1 | grep releases/tag | awk -F '/' '{print $NF}' | awk -F ' ' '{print $1}' )"
+	[ -z "$tag1" ] && tag1="$( wget -T 5 -t 3 --user-agent "$user_agent" --quiet --output-document=-  https://github.com/fatedier/frp/releases/latest  2>&1 | grep '<a href="/fatedier/frp/tree/'  |head -n1 | awk -F '/' '{print $NF}' | awk -F '"' '{print $1}' )"
+	tag2="$( wget -T 5 -t 3 --user-agent "$user_agent" --max-redirect=0  https://github.com/fatedier/frp/releases/latest  2>&1 | grep releases/tag | awk -F '/v' '{print $NF}' | awk -F ' ' '{print $1}' )"
+	[ -z "$tag2" ] && tag2="$( wget -T 5 -t 3 --user-agent "$user_agent" --quiet --output-document=-  https://github.com/fatedier/frp/releases/latest  2>&1 | grep '<a href="/fatedier/frp/tree/'  |head -n1 | awk -F '/v' '{print $NF}' | awk -F '"' '{print $1}' )"
+	wget --no-check-certificate -O /tmp/frp.tar.gz https://github.com/fatedier/frp/releases/download/$tag1/frp_"$tag2"_linux_mipsle.tar.gz
+	        if [ ! -f "/tmp/frp.tar.gz" ]; then
+                logger -t "frp" "frp下载失败，请检查网络是否能够连接github!程序将退出。"
+                nvram set frpc_enable=0
+                nvram set frps_enable=0
+                exit 0
+                else
+                        logger -t "frp" "frp下载成功。"
+			tar -xzvf /tmp/frp.tar.gz -C /tmp
+                        mv -f /tmp/frp_"$tag2"_linux_mipsle/frps /tmp/frp/
+			mv -f /tmp/frpp_"$tag2"_linux_mipsle/frpc /tmp/frp/
+                        rm -rf /tmp/frp.tar.gz /tmp/frp_"$tag2"_linux_mipsle
+                        chmod 777 /tmp/frp/frpc
+                        chmod 777 /tmp/frp/frps
+                fi
+	else 
+		logger -t "frp" "frp下载成功。"
+		chmod 777 /tmp/frp/frpc
+		chmod 777 /tmp/frp/frps
+	fi
+}
 frp_start () 
 {
+	if [ ! -f "/tmp/frp/frps" ] || [ ! -f "/tmp/frp/frpc" ]; then
+	dl_frp
+	fi
 	/etc/storage/frp_script.sh
 	sed -i '/frp/d' /etc/storage/cron/crontabs/$http_username
 	cat >> /etc/storage/cron/crontabs/$http_username << EOF

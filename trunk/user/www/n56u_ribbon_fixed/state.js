@@ -390,44 +390,49 @@ tabtitle[6] = new Array("", "<#menu5_6_2#>", "<#menu5_6_5#>", "<#menu5_6_1#>", "
 tabtitle[7] = new Array("", "<#menu5_10_1#>", "<#menu5_10_2#>", "<#menu5_10_3#>" , "<#menu5_22_1#>");
 tabtitle[8] = new Array("", "<#menu5_11#>", "<#menu5_12#>", "WAN", "", "", "", "", "", "", "");
 tabtitle[9] = new Array("", "<#menu5_7_2#>", "<#menu5_7_3#>", "<#menu5_7_5#>", "<#menu5_7_6#>", "<#menu5_7_8#>");
-if (found_app_scutclient()){
-	tabtitle[10] = new Array("", "<#menu5_1_1#>","<#menu5_13_log#>");
-}
-if (found_app_dnsforwarder()){
-	tabtitle[11] = new Array("", "<#menu5_1_1#>");
-}
+
 if (found_app_shadowsocks()){
-	tabtitle[12] = new Array("", "<#menu5_1_1#>","<#menu5_16_20#>");
-}
-if (found_app_mentohust()){
-	tabtitle[13] = new Array("", "<#menu5_1_1#>","<#menu5_13_log#>");
-}
-if (found_app_adbyby()){
-	tabtitle[14] = new Array("", "<#menu5_20_1#>");
-}
-if (found_app_koolproxy()){
-	if (found_app_adbyby()){
-		tabtitle[14].push("<#menu5_26_1#>");
-	}else{
-	tabtitle[14] = new Array("", "<#menu5_26_1#>");
+	tabtitle[10] = new Array("", "<#menu5_16#>");}
+	else {
+		if (found_app_dnsforwarder()){
+		tabtitle[10] = new Array("", "<#menu5_1_1#>");}
+		else{
+			if (found_app_adbyby()){
+			tabtitle[10] = new Array("", "<#menu5_20_1#>");}
+			else{
+				if (found_app_koolproxy()){
+				tabtitle[10] = new Array("", "<#menu5_26_1#>");}
+				else {
+					if (found_app_smartdns()){
+					tabtitle[10] = new Array("", "<#menu5_24_1#>");}
+					else{
+						if (found_app_adguardhome()){
+						tabtitle[10] = new Array("", "<#menu5_28_1#>");}
+						else{
+							if (found_app_aliddns()){
+							tabtitle[10] = new Array("", "<#menu5_23_1#>");}
+							else{
+								if (found_app_frp()){
+								tabtitle[10] = new Array("", "<#menu5_25_1#>");}
+								else{
+									if (found_app_caddy()){
+									tabtitle[10] = new Array("", "<#menu5_27_1#>");}
+									else {
+										if (found_app_scutclient()){
+										tabtitle[10] = new Array("", "<#menu5_13#>");}
+										else {
+											if (found_app_mentohust()){
+											tabtitle[10] = new Array("", "<#menu5_18#>");}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
 	}
-}
-if (found_app_smartdns()){
-	tabtitle[15] = new Array("", "<#menu5_29#>");	
-}else{
-if (found_app_adguardhome()){
-	tabtitle[15] = new Array("", "<#menu5_29#>");
-}
-}
-if (found_app_aliddns()){
-	tabtitle[16] = new Array("", "<#menu5_30#>");
-}
-if (found_app_frp()){
-	tabtitle[17] = new Array("", "<#menu5_25_1#>");
-}
-if (found_app_caddy()){
-	tabtitle[18] = new Array("", "<#menu5_27_1#>");
-}
 //Level 3 Tab title
 
 tablink[0] = new Array("", "Advanced_Wireless2g_Content.asp", "Advanced_WGuest2g_Content.asp", "Advanced_WMode2g_Content.asp", "Advanced_ACL2g_Content.asp", "Advanced_WSecurity2g_Content.asp", "Advanced_WAdvanced2g_Content.asp");
@@ -440,131 +445,95 @@ tablink[6] = new Array("", "Advanced_System_Content.asp", "Advanced_Services_Con
 tablink[7] = new Array("", "Advanced_Tweaks_Content.asp", "Advanced_Scripts_Content.asp", "Advanced_InetDetect_Content.asp" ,"Advanced_web.asp");
 tablink[8] = new Array("", "Main_WStatus2g_Content.asp", "Main_WStatus_Content.asp", "", "", "", "", "", "", "", "");
 tablink[9] = new Array("", "Main_LogStatus_Content.asp", "Main_DHCPStatus_Content.asp", "Main_IPTStatus_Content.asp", "Main_RouteStatus_Content.asp", "Main_CTStatus_Content.asp");
-if (found_app_scutclient()){
-	scutclient_array = new Array("", "scutclient.asp", "scutclient_log.asp");
-	tablink[10] = (scutclient_array);
-}
-if (found_app_dnsforwarder()){
-	dns_forwarder_array = new Array("", "dns-forwarder.asp");
-	tablink[11] = (dns_forwarder_array);
-}
 if (found_app_shadowsocks()){
-	shadowsocks_array = new Array("","Shadowsocks.asp","Shadowsocks_log.asp");
-	tablink[12] = (shadowsocks_array);
-}
-if (found_app_mentohust()){
-	mentohust_array = new Array("","mentohust.asp","mentohust_log.asp");
-	tablink[13] = (mentohust_array);
-}
-if (found_app_adbyby()){
-	ad_array = new Array("","Advanced_adbyby.asp");
-	tablink[14] = (ad_array);
-}else if (found_app_koolproxy()){
-	kp_array = new Array("","Advanced_koolproxy.asp");
-	tablink[14] = (kp_array);
-}
-if (found_app_smartdns()){
-	smartdns_array = new Array("","Advanced_smartdns.asp");
-	tablink[15] = (smartdns_array);
-}else if (found_app_adguardhome()){
-	adg_array = new Array("","Advanced_adguardhome.asp");
-	tablink[15] = (adg_array);
-}
-if (found_app_aliddns()){
-	aliddns_array = new Array("","Advanced_aliddns.asp");
-	tablink[16] = (aliddns_array);
-}
-if (found_app_frp()){
-	frp_array = new Array("","Advanced_frp.asp");
-	tablink[17] = (frp_array);
-}
-if (found_app_caddy()){
-	caddy_array = new Array("","Advanced_caddy.asp");
-	tablink[18] = (caddy_array);
-}
-
+	shadowsocks_array = new Array("","Shadowsocks.asp");
+	tablink[10] = (shadowsocks_array);}
+	else if (found_app_dnsforwarder()){
+		dns_forwarder_array = new Array("", "dns-forwarder.asp");
+		tablink[10] = (dns_forwarder_array);}
+		else if (found_app_adbyby()){
+			ad_array = new Array("","Advanced_adbyby.asp");
+			tablink[10] = (ad_array);}
+			else if (found_app_koolproxy()){
+				kp_array = new Array("","Advanced_koolproxy.asp");
+				tablink[10] = (kp_array);}
+				else if (found_app_smartdns()){
+					smartdns_array = new Array("","Advanced_smartdns.asp");
+					tablink[10] = (smartdns_array);}
+					else if (found_app_adguardhome()){
+						adg_array = new Array("","Advanced_adguardhome.asp");
+						tablink[10] = (adg_array);}
+						else if (found_app_aliddns()){
+							aliddns_array = new Array("","Advanced_aliddns.asp");
+							tablink[10] = (aliddns_array);}
+							else if (found_app_frp()){
+								frp_array = new Array("","Advanced_frp.asp");
+								tablink[10] = (frp_array);}
+								else if (found_app_caddy()){
+									caddy_array = new Array("","Advanced_caddy.asp");
+									tablink[10] = (caddy_array);}
+									else if (found_app_scutclient()){
+										scutclient_array = new Array("", "scutclient.asp");
+										tablink[10] = (scutclient_array);}
+										else if (found_app_mentohust()){
+												mentohust_array = new Array("","mentohust.asp");
+												tablink[10] = (mentohust_array);}
 //Level 2 Menu
 menuL2_title = new Array(20)
 menuL2_title = new Array("", "<#menu5_11#>", "<#menu5_12#>", "<#menu5_2#>", "<#menu5_3#>", "<#menu5_5#>", "<#menu5_4#>", "<#menu5_6#>", "<#menu5_10#>", "<#menu5_9#>", "<#menu5_7#>");
-if (found_app_scutclient()){
-	menuL2_title.push("<#menu5_13#>");
-} else menuL2_title.push("");
-
-if (found_app_dnsforwarder()){
-	menuL2_title.push("<#menu5_15#>");
-} else menuL2_title.push("");
-
 if (found_app_shadowsocks()){
-	menuL2_title.push("<#menu5_16#>");
-} else menuL2_title.push("");
-
-if (found_app_mentohust()){
-	menuL2_title.push("mentohust");
-} else menuL2_title.push("");
-
-if (found_app_koolproxy()){
-	menuL2_title.push("<#menu5_20#>");
-}else if (found_app_adbyby()){
-	menuL2_title.push("<#menu5_20#>");
-} else menuL2_title.push("");
-
-if (found_app_smartdns()){
-	menuL2_title.push("<#menu5_29#>");
+	menuL2_title.push("<#menu5_31#>");
+} else if (found_app_dnsforwarder()){
+	menuL2_title.push("<#menu5_31#>");
+} else if (found_app_adbyby()){
+	menuL2_title.push("<#menu5_31#>");
+}else if (found_app_koolproxy()){
+	menuL2_title.push("<#menu5_31#>");
+} else if (found_app_smartdns()){
+	menuL2_title.push("<#menu5_31#>");
 } else if (found_app_adguardhome()){
-	menuL2_title.push("<#menu5_29#>");
-} else menuL2_title.push("");
-
-if (found_app_aliddns()){
-	menuL2_title.push("<#menu5_30#>");
-} else menuL2_title.push("");
-
-if (found_app_frp()){
-	menuL2_title.push("<#menu5_25#>");
-} else menuL2_title.push("");
-
-if (found_app_caddy()){
-	menuL2_title.push("<#menu5_27#>");
+	menuL2_title.push("<#menu5_31#>");
+} else if (found_app_aliddns()){
+	menuL2_title.push("<#menu5_31#>");
+} else if (found_app_frp()){
+	menuL2_title.push("<#menu5_31#>");
+} else if (found_app_caddy()){
+	menuL2_title.push("<#menu5_31#>");
+} else if (found_app_scutclient()){
+	menuL2_title.push("<#menu5_31#>");
+} else if (found_app_mentohust()){
+	menuL2_title.push("<#menu5_31#>");
 } else menuL2_title.push("");
 
 menuL2_link  = new Array("", tablink[0][1], tablink[1][1], tablink[2][1], tablink[3][1], tablink[4][1], tablink[5][1], tablink[6][1], tablink[7][1], tablink[8][1], tablink[9][1]);
-if (found_app_scutclient()){
-	menuL2_link.push(scutclient_array[1]);
-} else menuL2_link.push("");
-
-if (found_app_dnsforwarder()){
-	menuL2_link.push(dns_forwarder_array[1]);
-} else menuL2_link.push("");
-
 if (found_app_shadowsocks()){
 	menuL2_link.push(shadowsocks_array[1]);
-} else menuL2_link.push("");
-
-if (found_app_mentohust()){
-	menuL2_link.push(mentohust_array[1]);
-} else menuL2_link.push("");
-if (found_app_adbyby()){
+} else if (found_app_dnsforwarder()){
+	menuL2_link.push(dns_forwarder_array[1]);
+} else if (found_app_adbyby()){
 	menuL2_link.push(ad_array[1]);
 } else if (found_app_koolproxy()){
 	menuL2_link.push(kp_array[1]);
-} else menuL2_link.push("");
-if (found_app_smartdns()){
+} else if (found_app_smartdns()){
 	menuL2_link.push(smartdns_array[1]);
 } else if (found_app_adguardhome()){
 	menuL2_link.push(adg_array[1]);
-} else menuL2_link.push("");
-if (found_app_aliddns()){
+} else if (found_app_aliddns()){
 	menuL2_link.push(aliddns_array[1]);
-} else menuL2_link.push("");
-if (found_app_frp()){
+} else if (found_app_frp()){
 	menuL2_link.push(frp_array[1]);
-} else menuL2_link.push("");
-if (found_app_caddy()){
+} else if (found_app_caddy()){
 	menuL2_link.push(caddy_array[1]);
+} else if (found_app_scutclient()){
+	menuL2_link.push(scutclient_array[1]);
+} else if (found_app_mentohust()){
+	menuL2_link.push(mentohust_array[1]);
 } else menuL2_link.push("");
 
+
 //Level 1 Menu in Gateway, Router mode
-menuL1_title = new Array("", "<#menu1#>", "", "<#menu2#>", "<#menu6#>", "<#menu4#>", "<#menu5_8#>", "<#menu5#>");
-menuL1_link = new Array("", "index.asp", "", "vpnsrv.asp", "vpncli.asp", "Main_TrafficMonitor_realtime.asp", "Advanced_System_Info.asp", "as.asp");
+menuL1_title = new Array("", "<#menu1#>", "<#menu3#>", "<#menu2#>", "<#menu6#>", "<#menu4#>", "<#menu5_8#>", "<#menu5#>");
+menuL1_link = new Array("", "index.asp", "aidisk.asp", "vpnsrv.asp", "vpncli.asp", "Main_TrafficMonitor_realtime.asp", "Advanced_System_Info.asp", "as.asp");
 menuL1_icon = new Array("", "icon-home", "icon-hdd", "icon-retweet", "icon-globe", "icon-tasks", "icon-random", "icon-wrench");
 
 function show_menu(L1, L2, L3){
@@ -1423,66 +1392,55 @@ var w_vpn_s = '<% nvram_get_x("", "w_vpn_s"); %>';
 var w_vpn_c = '<% nvram_get_x("", "w_vpn_c"); %>';
 var w_wnet = '<% nvram_get_x("", "w_wnet"); %>';
 var w_sys = '<% nvram_get_x("", "w_sys"); %>';
+var w_2 = '<% nvram_get_x("", "w_2"); %>';
+var w_5 = '<% nvram_get_x("", "w_5"); %>';
 var w_usb = '<% nvram_get_x("", "w_usb"); %>';
 var w_net = '<% nvram_get_x("", "w_net"); %>';
 var w_log = '<% nvram_get_x("", "w_log"); %>';
-var w_scu = '<% nvram_get_x("", "w_scu"); %>';
-var w_dnsf = '<% nvram_get_x("", "w_dnsf"); %>';
-var w_ss = '<% nvram_get_x("", "w_ss"); %>';
-var w_men = '<% nvram_get_x("", "w_men"); %>';
-var w_adbyby = '<% nvram_get_x("", "w_adbyby"); %>';
-
-if (w_ai==0){
+var w_en = '<% nvram_get_x("", "w_en"); %>';
+if (w_ai==0){       // Aidisk
 	menuL1_link[2] = "";
 	menuL1_title[2] = "";
 }
-if (w_vpn_s==0){
+if (w_vpn_s==0){      // VPN服务端
 	menuL1_link[3] = "";
 	menuL1_title[3] = "";
 }
-if (w_vpn_c==0){
+if (w_vpn_c==0){      // VPN客户端
 	menuL1_link[4] = "";
 	menuL1_title[4] = "";
 }
-if (w_wnet==0){
+if (w_wnet==0){      // 网络流量
 	menuL1_link[5] = "";
 	menuL1_title[5] = "";
 }
-if (w_sys==0){
+if (w_sys==0){     // 系统信息
 	menuL1_link[6] = "";
 	menuL1_title[6] = "";
 }
-if (w_usb==0){
+if (w_2==0){     // 无线2.4G
+	menuL2_link[1] = "";
+	menuL2_title[1] = "";
+}
+if (w_5==0){     // 无线5G
+	menuL2_link[2] = "";
+	menuL2_title[2] = "";
+}
+if (w_usb==0){     // USB应用
 	menuL2_link[6] = "";
 	menuL2_title[6] = "";
 }
-if (w_net==0){
+if (w_net==0){     // 网络信息
 	menuL2_link[9] = "";
 	menuL2_title[9] = "";
 }
-if (w_log==0){
+if (w_log==0){     // 系统日志
 	menuL2_link[10] = "";
 	menuL2_title[10] = "";
 }
-if (w_scu==0){
+if (w_en==0){     // 扩展功能
 	menuL2_link[11] = "";
 	menuL2_title[11] = "";
-}
-if (w_dnsf==0){
-	menuL2_link[12] = "";
-	menuL2_title[12] = "";
-}
-if (w_ss==0){
-	menuL2_link[13] = "";
-	menuL2_title[13] = "";
-}
-if (w_men==0){
-	menuL2_link[14] = "";
-	menuL2_title[14] = "";
-}
-if (w_adbyby==0){
-	menuL2_link[15] = "";
-	menuL2_title[15] = "";
 }
 (function($){
     var $j = $.noConflict();

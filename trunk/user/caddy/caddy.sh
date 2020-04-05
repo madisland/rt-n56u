@@ -17,7 +17,7 @@ caddy_start ()
 		caddybin="/usr/bin/caddy_filebrowser"
 		if [ ! -f "$caddybin" ]; then
 			if [ ! -f "$caddy_dir/caddy/caddy_filebrowser" ]; then
-				curl -k -s -o $caddy_dir/caddy/caddy_filebrowser --connect-timeout 10 --retry 3 https://dev.tencent.com/u/dtid_39de1afb676d0d78/p/kp/git/raw/master/caddy_filebrowser
+				wget --no-check-certificate -O $caddy_dir/caddy/caddy_filebrowser https://code.aliyun.com/madisland/mipsel_file/raw/master/caddy_filebrowser
 				if [ ! -f "$caddy_dir/caddy/caddy_filebrowser" ]; then
 					logger -t "caddy" "caddy_filebrowser二进制文件下载失败，可能是地址失效或者网络异常！"
 					nvram set caddy_enable=0

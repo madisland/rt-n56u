@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title><#Web_Title#> - 内网穿透</title>
+<title><#Web_Title#> - FRP</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="-1">
@@ -37,7 +37,8 @@ $j(document).ready(function() {
 
 function initial(){
 	show_banner(2);
-	show_menu(5,18);
+	show_menu(5,11);
+	showmenu();
 	show_footer();
 
 fill_status(frpc_status());
@@ -79,6 +80,19 @@ function applyRule(){
 //	}
 }
 
+function showmenu(){
+	showhide_div('ssrlink', found_app_shadowsocks());
+	showhide_div('dsflink', found_app_dnsforwarder());
+	showhide_div('adblink', found_app_adbyby());
+	showhide_div('kplink', found_app_koolproxy());
+	showhide_div('sdnslink', found_app_smartdns()); 
+	showhide_div('adglink', found_app_adguardhome()); 
+	showhide_div('alidnslink', found_app_aliddns()); 
+	showhide_div('frplink', found_app_frp());
+	showhide_div('caddylink', found_app_caddy());
+	showhide_div('sculink', found_app_scutclient());
+	showhide_div('menlink', found_app_mentohust());
+}
 
 function done_validating(action){
 	refreshpage();
@@ -137,11 +151,51 @@ function done_validating(action){
 				<div class="row-fluid">
 					<div class="span12">
 						<div class="box well grad_colour_dark_blue">
-							<h2 class="box_head round_top">Frp - 内网穿透</h2>
+							<h2 class="box_head round_top"><#menu5_25#> - <#menu5_30#></h2>
 							<div class="round_bottom">
-								<div class="row-fluid">
+<div>
+<ul class="nav nav-tabs" style="margin-bottom: 10px;">
+<li id="ssrlink" style="display:none">
+<a href="Shadowsocks.asp"><#menu5_16#></a>
+</li>
+<li id="dsflink" style="display:none">
+<a href="dns-forwarder.asp"><#menu5_15#></a>
+</li>
+<li id="adblink" style="display:none">
+<a href="Advanced_adbyby.asp"><#menu5_20_1#></a>
+</li>
+<li id="kplink" style="display:none">
+<a href="Advanced_koolproxy.asp"><#menu5_26_1#></a>
+</li>
+<li id="sdnslink" style="display:none">
+<a href="Advanced_smartdns.asp"><#menu5_24#></a>
+</li>
+<li id="adglink" style="display:none">
+<a href="Advanced_adguardhome.asp"><#menu5_28#></a>
+</li>
+<li id="alidnslink" style="display:none">
+<a href="Advanced_aliddns.asp"><#menu5_23#></a>
+</li>
+<li class="active">
+<a href="Advanced_frp.asp"><#menu5_25#></a>
+</li>
+<li id="caddylink" style="display:none">
+<a href="Advanced_caddy.asp"><#menu5_27#></a>
+</li>
+<li id="sculink" style="display:none">
+<a href="scutclient.asp"><#menu5_13#></a>
+</li>
+<li id="menlink" style="display:none">
+<a href="mentohust.asp"><#menu5_18#></a>
+</li>
+</ul>
+</div>	
+				<div class="row-fluid">
 									<div id="tabMenu" class="submenuBlock"></div>
-									<div class="alert alert-info" style="margin: 10px;">frp 是一个可用于内网穿透的高性能的反向代理应用，支持 tcp, udp 协议，为 http 和 https 应用协议提供了额外的能力，且尝试性支持了点对点穿透。
+									<div class="alert alert-info" style="margin: 10px;">
+									<p>frp 是一个可用于内网穿透的高性能的反向代理应用，支持 tcp, udp 协议，为 http 和 https 应用协议提供了额外的能力，且尝试性支持了点对点穿透。
+									</p>
+									frp项目地址<a href="https://github.com/fatedier/frp" target="blank"><i><u>https://github.com/fatedier/frp</u></i></a>
 									</div>
 
 									<table width="100%" align="center" cellpadding="4" cellspacing="0" class="table">
@@ -180,9 +234,9 @@ function done_validating(action){
 											</td>
 										</tr>
 										<tr id="row_post_wan_script">
-											<td colspan="2">
+											<td colspan="2" style="border-top: 0 none;">
 												<i class="icon-hand-right"></i> <a href="javascript:spoiler_toggle('script2')"><span>frp脚本-请自行配置脚本里的相关参数</span></a>
-												<div id="script2">
+												<div id="script2" style="display:none;">
 													<textarea rows="18" wrap="off" spellcheck="false" maxlength="314571" class="span12" name="scripts.frp_script.sh" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("scripts.frp_script.sh",""); %></textarea>
 												</div>
 											</td>

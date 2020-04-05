@@ -37,10 +37,12 @@ $j(document).ready(function() {
 
 function initial(){
 	show_banner(2);
-	show_menu(5,16);
+	show_menu(5,11);
 	showmenu();
 	show_footer();
 
+	if (!login_safe())
+		textarea_scripts_enabled(0);
 }
 
 function applyRule(){
@@ -55,8 +57,22 @@ function applyRule(){
 //	}
 }
 
+function textarea_scripts_enabled(v){
+	inputCtrl(document.form['scripts.adg.sh'], v);
+}
+
 function showmenu(){
-showhide_div('sdnslink', found_app_smartdns());
+	showhide_div('ssrlink', found_app_shadowsocks());
+	showhide_div('dsflink', found_app_dnsforwarder());
+	showhide_div('adblink', found_app_adbyby());
+	showhide_div('kplink', found_app_koolproxy());
+	showhide_div('sdnslink', found_app_smartdns()); 
+	showhide_div('adglink', found_app_adguardhome()); 
+	showhide_div('alidnslink', found_app_aliddns()); 
+	showhide_div('frplink', found_app_frp());
+	showhide_div('caddylink', found_app_caddy());
+	showhide_div('sculink', found_app_scutclient());
+	showhide_div('menlink', found_app_mentohust());
 }
 
 function done_validating(action){
@@ -118,22 +134,49 @@ function done_validating(action){
 						<div class="box well grad_colour_dark_blue">
 							<h2 class="box_head round_top"><#menu5_28#> - <#menu5_29#></h2>
 							<div class="round_bottom">
-							<div>
-                            <ul class="nav nav-tabs" style="margin-bottom: 10px;">
-								<li id="sdnslink" style="display:none">
-                                    <a href="Advanced_smartdns.asp"><#menu5_24#></a>
-                                </li>
-								 <li class="active">
-                                    <a href="Advanced_adguardhome.asp"><#menu5_28#></a>
-                                </li>
-                            </ul>
-                        </div>
+<div>
+<ul class="nav nav-tabs" style="margin-bottom: 10px;">
+<li id="ssrlink" style="display:none">
+<a href="Shadowsocks.asp"><#menu5_16#></a>
+</li>
+<li id="dsflink" style="display:none">
+<a href="dns-forwarder.asp"><#menu5_15#></a>
+</li>
+<li id="adblink" style="display:none">
+<a href="Advanced_adbyby.asp"><#menu5_20_1#></a>
+</li>
+<li id="kplink" style="display:none">
+<a href="Advanced_koolproxy.asp"><#menu5_26_1#></a>
+</li>
+<li id="sdnslink" style="display:none">
+<a href="Advanced_smartdns.asp"><#menu5_24#></a>
+</li>
+<li class="active">
+<a href="Advanced_adguardhome.asp"><#menu5_28#></a>
+</li>
+<li id="alidnslink" style="display:none">
+<a href="Advanced_aliddns.asp"><#menu5_23#></a>
+</li>
+<li id="frplink" style="display:none">
+<a href="Advanced_frp.asp"><#menu5_25#></a>
+</li>
+<li id="caddylink" style="display:none">
+<a href="Advanced_caddy.asp"><#menu5_27#></a>
+</li>
+<li id="sculink" style="display:none">
+<a href="scutclient.asp"><#menu5_13#></a>
+</li>
+<li id="menlink" style="display:none">
+<a href="mentohust.asp"><#menu5_18#></a>
+</li>
+</ul>
+</div>
 								<div class="row-fluid">
 									<div id="tabMenu" class="submenuBlock"></div>
 									<div class="alert alert-info" style="margin: 10px;">
 									<p>AdGuard Home 是一款全网广告拦截与反跟踪软件。在您将其安装完毕后，它将保护您所有家用设备，同时您不再需要安装任何客户端软件。随着物联网与连接设备的兴起，掌控您自己的整个网络环境变得越来越重要。
 									</p>
-									AdGuard Home  主页<a href="https://adguard.com/" target="blank"><i><u>https://adguard.com/</u></i></a>
+									<a href="https://adguard.com/" target="blank">AdGuard Home  主页</a>		&&		<a href="https://github.com/AdguardTeam/AdGuardHome/wiki/Configuration" target="blank">帮助文档</a>
 									</div>
 
 									<table width="100%" align="center" cellpadding="4" cellspacing="0" class="table">
@@ -158,17 +201,24 @@ function done_validating(action){
 												<select name="adg_redirect" class="input" style="width: 200px">
 													<option value="0" <% nvram_match_x("","adg_redirect", "0","selected"); %>>无</option>
 													<option value="1" <% nvram_match_x("","adg_redirect", "1","selected"); %>>作为dnsmasq的上游服务器</option>
-													<option value="2" <% nvram_match_x("","adg_redirect", "2","selected"); %>>重定向53端口到AdGuardHome</option>
 												</select>
 											</td>
 										</tr>
 										<tr>
 											<th>WEB管理地址:</th>
 											<td>
-											<a href="http://<% nvram_get_x("", "lan_ipaddr"); %>:3030">http://<% nvram_get_x("", "lan_ipaddr"); %>:3030</a>
+											<a href="http://<% nvram_get_x("", "lan_ipaddr"); %>:3000" target="_blank">http://<% nvram_get_x("", "lan_ipaddr"); %>:3000</a>
 											</td>
 										</tr>
 										
+										<tr id="row_post_wan_script">
+											<td colspan="2" style="border-top: 0 none;">
+												<i class="icon-hand-right"></i> <a href="javascript:spoiler_toggle('script2')"><span>AdGuardHome脚本</span></a>
+												<div id="script2" style="display:none;">
+													<textarea rows="18" wrap="off" spellcheck="false" maxlength="314571" class="span12" name="scripts.adg.sh" style="font-family:'Courier New'; font-size:12px;"><% nvram_dump("scripts.adg.sh",""); %></textarea>
+												</div>
+											</td>
+										</tr>
 
 										<tr>
 											<td colspan="2" style="border-top: 0 none;">
