@@ -5,7 +5,6 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="-1">
-
 <link rel="shortcut icon" href="images/favicon.ico">
 <link rel="icon" href="images/favicon.png">
 <link rel="stylesheet" type="text/css" href="/bootstrap/css/bootstrap.min.css">
@@ -22,12 +21,16 @@
 <script type="text/javascript" src="/help.js"></script>
 
 <script>
-var $j = jQuery.noConflict();
-<% mentohust_status(); %>
 
+var $j = jQuery.noConflict();
+ <% mentohust_status(); %>
 $j(document).ready(function(){
 	init_itoggle('mentohust_enable');
-	fill_status(mentohust_status());
+	$j("#tab_men_cfg, #tab_men_acfg,#tab_men_log").click(function () {
+		var newHash = $j(this).attr('href').toLowerCase();
+		showTab(newHash);
+		return false;
+	});
 });
 
 function initial(){
@@ -35,6 +38,8 @@ function initial(){
 	show_menu(5,11);
 	showmenu();
 	show_footer();
+	fill_status(mentohust_status());
+	showTab(getHash());
 	var o1 = document.form.mentohust_startmode;
 	var o2 = document.form.mentohust_dhcp;
 	var o3 = document.form.mentohust_daemon;
@@ -56,9 +61,7 @@ function showmenu(){
 	showhide_div('frplink', found_app_frp());
 	showhide_div('caddylink', found_app_caddy());
 	showhide_div('sculink', found_app_scutclient());
-	showhide_div('scullink', found_app_scutclient());
 	showhide_div('menlink', found_app_mentohust());
-	showhide_div('menllink', found_app_mentohust());
 }
 
 function applyRule(){
@@ -89,6 +92,31 @@ function fill_status(status_code){
 	else if (status_code == 1)
 		stext = "<#Running#>";
 	$("mentohust_status").innerHTML = '<span class="label label-' + (status_code != 0 ? 'success' : 'warning') + '">' + stext + '</span>';
+}
+
+var arrHashes = ["cfg","acfg","log"];
+function showTab(curHash){
+	var obj = $('tab_men_'+curHash.slice(1));
+	if (obj == null || obj.style.display == 'none')
+		curHash = '#cfg';
+	for(var i = 0; i < arrHashes.length; i++){
+		if(curHash == ('#'+arrHashes[i])){
+			$j('#tab_men_'+arrHashes[i]).parents('li').addClass('active');
+			$j('#wnd_men_'+arrHashes[i]).show();
+		}else{
+			$j('#wnd_men_'+arrHashes[i]).hide();
+			$j('#tab_men_'+arrHashes[i]).parents('li').removeClass('active');
+		}
+	}
+	window.location.hash = curHash;
+}
+function getHash(){
+	var curHash = window.location.hash.toLowerCase();
+	for(var i = 0; i < arrHashes.length; i++){
+		if(curHash == ('#'+arrHashes[i]))
+			return curHash;
+	}
+	return ('#'+arrHashes[0]);
 }
 
 </script>
@@ -180,21 +208,29 @@ function fill_status(status_code){
 <li id="sculink" style="display:none">
 <a href="scutclient.asp"><#menu5_13#></a>
 </li>
-<li id="scullink" style="display:none">
-<a href="scutclient_log.asp"><#menu5_13#></a>
-</li>
 <li class="active">
 <a href="mentohust.asp"><#menu5_18#></a>
 </li>
-<li class="active">
-<a href="mentohust_log.asp"><#menu5_18#></a>
-</li>
 </ul>
 </div>
+				<div>
+					<ul class="nav nav-tabs" style="margin-bottom: 10px;">
+						<li class="active">
+							<a id="tab_men_cfg" href="#cfg">一般设置</a>
+						</li>
+						<li>
+							<a id="tab_men_acfg" href="#acfg">高级设置</a>
+						</li>
+						<li>
+							<a id="tab_men_log" href="#log">运行日志</a>
+						</li>
+					</ul>
+				</div>
+
                                 <div class="row-fluid">
                                     <div id="tabMenu" class="submenuBlock"></div>
+<div id="wnd_men_cfg">
                                     <table width="100%" cellpadding="4" cellspacing="0" class="table">
-                                        <tr> <th colspan="2" style="background-color: #E3E3E3;"><#menu5_1_1#></th> </tr>
 
                                         <tr> <th width="50%"><#InetControl#></th>
                                             <td style="border-top: 0 none;" colspan="2">
@@ -258,8 +294,16 @@ function fill_status(status_code){
                                                 <input type="text" maxlength="15" class="input" size="15" name="mentohust_dns" style="width: 145px" value="<% nvram_get_x("","mentohust_dns"); %>" onkeypress="return is_ipaddr(this,event);"/>
                                             </td>
                                         </tr>
-
-                                        <tr> <th colspan="2" style="background-color: #E3E3E3;"><#menu5_18_8_0#></th> </tr>
+                                        <tr>
+                                            <td colspan="2">
+                                                <center><input class="btn btn-primary" style="width: 219px" type="button" value="<#CTL_apply#>" onclick="applyRule()" /></center>
+                                            </td>
+                                        </tr>
+                                     </table>
+                                </div>
+<div id="wnd_men_acfg" style="display:none">
+              <table width="100%" cellpadding="4" cellspacing="0" class="table">
+<!--	<tr> <th colspan="2" style="background-color: #E3E3E3;"><#menu5_18_8_0#></th> </tr>  -->
 
                                         <tr> <th width="50%"><#menu5_18_8#></th>
                                             <td>
@@ -356,7 +400,25 @@ function fill_status(status_code){
                                             </td>
                                         </tr>
                                     </table>
-                                </div>
+</div>
+<div id="wnd_men_log" style="display:none">
+                                    <table width="100%" cellpadding="4" cellspacing="0" class="table">
+                                        <tr>
+                                            <td colspan="3" style="border-top: 0 none; padding-bottom: 0px;">
+                                                <textarea rows="21" class="span12" style="height:377px; font-family:'Courier New', Courier, mono; font-size:13px;" readonly="readonly" wrap="off" id="textarea"><% nvram_dump("mentohust.log",""); %></textarea>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td width="15%" style="text-align: left; padding-bottom: 0px;">
+                                                <input type="button" onClick="location.href=location.href" value="<#CTL_refresh#>" class="btn btn-primary" style="width: 170px">
+                                            </td>
+                                            <td width="15%" style="text-align: left; padding-bottom: 0px;">
+                                                <input type="button" onClick="location.href='mentohust.log'" value="<#CTL_onlysave#>" class="btn btn-success" style="width: 170px">
+                                            </td>
+                                        </tr>
+                                    </table>
+</div>
+								</div>
                             </div>
                         </div>
                     </div>

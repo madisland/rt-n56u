@@ -22,17 +22,21 @@
 <script type="text/javascript" src="/help.js"></script>
 
 <script>
+
 var $j = jQuery.noConflict();
 <% scutclient_status(); %>
 <% scutclient_version(); %>
-
 $j(document).ready(function(){
 	init_itoggle('scutclient_enable');
 	init_itoggle('scutclient_debug');
 	init_itoggle('scutclient_watchcat');
 	init_itoggle('scutclient_wdg_force');
 	init_itoggle('scutclient_skip_udp_hb');
-	fill_status(scutclient_status());
+	$j("#tab_scu_cfg, #tab_scu_log").click(function () {
+		var newHash = $j(this).attr('href').toLowerCase();
+		showTab(newHash);
+		return false;
+	});
 });
 
 function initial(){
@@ -40,6 +44,8 @@ function initial(){
 	show_menu(5,11);
 	showmenu();
 	show_footer();
+	showTab(getHash());
+	fill_status(scutclient_status());
 	$("scutclient_version").innerHTML = '<#version#>' + scutclient_version() ;
 }
 
@@ -54,9 +60,7 @@ function showmenu(){
 	showhide_div('frplink', found_app_frp());
 	showhide_div('caddylink', found_app_caddy());
 	showhide_div('sculink', found_app_scutclient());
-	showhide_div('scullink', found_app_scutclient());
 	showhide_div('menlink', found_app_mentohust());
-	showhide_div('menllink', found_app_mentohust());
 }
 
 function applyRule(){
@@ -92,6 +96,31 @@ function fill_status(status_code){
 	else if (status_code == 1)
 		stext = "<#Running#>";
 	$("scutclient_status").innerHTML = '<span class="label label-' + (status_code != 0 ? 'success' : 'warning') + '">' + stext + '</span>';
+}
+
+var arrHashes = ["cfg","log"];
+function showTab(curHash){
+	var obj = $('tab_scu_'+curHash.slice(1));
+	if (obj == null || obj.style.display == 'none')
+		curHash = '#cfg';
+	for(var i = 0; i < arrHashes.length; i++){
+		if(curHash == ('#'+arrHashes[i])){
+			$j('#tab_scu_'+arrHashes[i]).parents('li').addClass('active');
+			$j('#wnd_scu_'+arrHashes[i]).show();
+		}else{
+			$j('#wnd_scu_'+arrHashes[i]).hide();
+			$j('#tab_scu_'+arrHashes[i]).parents('li').removeClass('active');
+		}
+	}
+	window.location.hash = curHash;
+}
+function getHash(){
+	var curHash = window.location.hash.toLowerCase();
+	for(var i = 0; i < arrHashes.length; i++){
+		if(curHash == ('#'+arrHashes[i]))
+			return curHash;
+	}
+	return ('#'+arrHashes[0]);
 }
 
 </script>
@@ -183,19 +212,24 @@ function fill_status(status_code){
 <li class="active">
 <a href="scutclient.asp"><#menu5_13#></a>
 </li>
-<li class="active">
-<a href="scutclient_log.asp"><#menu5_13#></a>
-</li>
 <li id="menlink" style="display:none">
 <a href="mentohust.asp"><#menu5_18#></a>
 </li>
-<li id="menllink" style="display:none">
-<a href="mentohust_log.asp"><#menu5_18#></a>
-</li>
 </ul>
 </div>
+				<div>
+					<ul class="nav nav-tabs" style="margin-bottom: 10px;">
+						<li class="active">
+							<a id="tab_scu_cfg" href="#cfg">基础设置</a>
+						</li>
+						<li>
+							<a id="tab_scu_log" href="#log">运行日志</a>
+						</li>
+					</ul>
+				</div>
                                 <div class="row-fluid">
                                     <div id="tabMenu" class="submenuBlock"></div>
+	<div id="wnd_scu_cfg">
                                     <table width="100%" cellpadding="4" cellspacing="0" class="table">
                                         <tr> <th colspan="2" style="background-color: #E3E3E3;"><#menu5_1_1#></th> </tr>
 
@@ -327,6 +361,24 @@ function fill_status(status_code){
                                             </td>
                                         </tr>
                                     </table>
+                               </div>
+<div id="wnd_scu_log" style="display:none">
+                                    <table width="100%" cellpadding="4" cellspacing="0" class="table">
+                                        <tr>
+                                            <td colspan="3" style="border-top: 0 none; padding-bottom: 0px;">
+                                                <textarea rows="21" class="span12" style="height:377px; font-family:'Courier New', Courier, mono; font-size:13px;" readonly="readonly" wrap="off" id="textarea"><% nvram_dump("scutclient.log",""); %></textarea>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td width="15%" style="text-align: left; padding-bottom: 0px;">
+                                                <input type="button" onClick="location.href=location.href" value="<#CTL_refresh#>" class="btn btn-primary" style="width: 170px">
+                                            </td>
+                                            <td width="15%" style="text-align: left; padding-bottom: 0px;">
+                                                <input type="button" onClick="location.href='scutclient.log'" value="<#CTL_onlysave#>" class="btn btn-success" style="width: 170px">
+                                            </td>
+                                        </tr>
+                                    </table>
+</div>
                                 </div>
                             </div>
                         </div>

@@ -171,12 +171,10 @@ ifneq ($(STORAGE_ENABLED),y)
 endif
 ifneq ($(CONFIG_FIRMWARE_INCLUDE_SCUTCLIENT),y)
 	rm -f $(INSTALLDIR)/www/scutclient.asp
-	rm -f $(INSTALLDIR)/www/scutclient_log.asp
 	rm -f $(INSTALLDIR)/www/scutclient_action.asp
 endif
 ifneq ($(CONFIG_FIRMWARE_INCLUDE_MENTOHUST),y)
 	rm -f $(INSTALLDIR)/www/mentohust.asp
-	rm -f $(INSTALLDIR)/www/mentohust_log.asp
 	rm -f $(INSTALLDIR)/www/mentohust_action.asp
 endif
 ifneq ($(CONFIG_FIRMWARE_INCLUDE_DNSFORWARDER),y)
@@ -185,7 +183,6 @@ endif
 ifneq ($(CONFIG_FIRMWARE_INCLUDE_SHADOWSOCKS),y)
 	rm -f $(INSTALLDIR)/www/Shadowsocks.asp
 	rm -f $(INSTALLDIR)/www/Shadowsocks_action.asp
-	rm -f $(INSTALLDIR)/www/Shadowsocks_log.asp
 endif
 
 ifeq ($(CONFIG_FIRMWARE_WEBUI_HIDE_VPN),y)
