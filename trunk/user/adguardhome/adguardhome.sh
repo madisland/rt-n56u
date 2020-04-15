@@ -118,7 +118,7 @@ dl_adg(){
 	logger -t "AdGuardHome" "自动下载AdGuardHome程序"
 	mkdir -p /tmp/AdGuardHome
 ###从Code.aliyun下载
-	wget --no-check-certificate -O /tmp/AdGuardHome/AdGuardHome https://code.aliyun.com/madisland/mipsel_file/raw/dbf4d10672ab930203908daffa0c3c693e3c613d/AdGuardHome
+	wget --no-check-certificate -O /tmp/AdGuardHome/AdGuardHome https://code.aliyun.com/madisland/mipsel_file/raw/dcdd47c7669ecfdc1c9431155922fca4dcfc83b5/AdGuardHome
 	if [ ! -f "/tmp/AdGuardHome/AdGuardHome" ];then
 		logger -t "AdGuardHome" "AdGuardHome下载失败，尝试从Github官方下载最新版程序!"
 ###从Github下载最新版本

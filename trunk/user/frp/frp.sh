@@ -33,7 +33,7 @@ dl_frp ()
 	mkdir -p /tmp/frp
         logger -t "frp" "自动下载最新版frp程序"
 ###从Code.aliyun下载
-	wget --no-check-certificate -O /tmp/frp/frpc https://code.aliyun.com/madisland/mipsel_file/raw/dbf4d10672ab930203908daffa0c3c693e3c613d/frpc && wget --no-check-certificate -O /tmp/frp/frps https://code.aliyun.com/madisland/mipsel_file/raw/dbf4d10672ab930203908daffa0c3c693e3c613d/frps
+	wget --no-check-certificate -O /tmp/frp/frpc https://code.aliyun.com/madisland/mipsel_file/raw/dcdd47c7669ecfdc1c9431155922fca4dcfc83b5/frpc && wget --no-check-certificate -O /tmp/frp/frps https://code.aliyun.com/madisland/mipsel_file/raw/dcdd47c7669ecfdc1c9431155922fca4dcfc83b5/frps
 	if [ ! -f "/tmp/frp/frpc" ] || [ ! -f "/tmp/frp/frps" ] ; then
 	logger -t "frp" "frp下载失败，尝试从Github下载最新版程序!"
 ####从GitHub下载

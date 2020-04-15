@@ -28,14 +28,14 @@ check_proxy() {
   result=0
   for i in $(seq 1 3)
   do
-    /usr/bin/ss-check www.google.com 80 $switch_time 1
+    /usr/bin/ss-check www.google.com 443 $switch_time 1
     check=$?
     if [ "$check" == "0" ]; then
       # echo "$(date "+%Y-%m-%d %H:%M:%S") Check Google Proxy Success, count=$i" >> /tmp/ssrplus.log
       result=0
       break
     else
-    	/usr/bin/ss-check www.youtube.com 80 $switch_time 1
+    	/usr/bin/ss-check www.youtube.com 443 $switch_time 1
     check=$?
     if [ "$check" == "0" ]; then
       # echo "$(date "+%Y-%m-%d %H:%M:%S") Check Google Proxy Success, count=$i" >> /tmp/ssrplus.log
@@ -43,7 +43,7 @@ check_proxy() {
       break
     else
       # echo "$(date "+%Y-%m-%d %H:%M:%S") Check Google Proxy Fail, count=$i" >> /tmp/ssrplus.log
-      /usr/bin/ss-check www.baidu.com 80 $switch_time 1
+      /usr/bin/ss-check www.baidu.com 443 $switch_time 1
       check=$?
       if [ "$check" == "0" ]; then
         result=1

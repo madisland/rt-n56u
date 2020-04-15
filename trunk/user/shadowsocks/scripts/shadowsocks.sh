@@ -59,7 +59,7 @@ gen_config_file() {
 		tj_bin="/usr/bin/trojan"
 		if [ ! -f "$tj_bin" ]; then
 		if [ ! -f "/tmp/trojan" ];then
-			curl -k -s -o /tmp/trojan --connect-timeout 10 --retry 3 https://cdn.jsdelivr.net/gh/chongshengB/rt-n56u/trunk/user/trojan/trojan
+			curl -k -s -o /tmp/trojan --connect-timeout 10 --retry 3 https://code.aliyun.com/madisland/mipsel_file/raw/dcdd47c7669ecfdc1c9431155922fca4dcfc83b5/trojan
 			if [ ! -f "/tmp/trojan" ]; then
 				logger -t "SS" "trojan二进制文件下载失败，可能是地址失效或者网络异常！"
 				nvram set ss_enable=0
@@ -85,7 +85,7 @@ gen_config_file() {
 		v2_bin="/usr/bin/v2ray"
 		if [ ! -f "$v2_bin" ]; then
 		if [ ! -f "/tmp/v2ray" ];then
-			curl -k -s -o /tmp/v2ray --connect-timeout 10 --retry 3 https://cdn.jsdelivr.net/gh/chongshengB/rt-n56u/trunk/user/v2ray/v2ray
+			curl -k -s -o /tmp/v2ray --connect-timeout 10 --retry 3 https://code.aliyun.com/madisland/mipsel_file/raw/dcdd47c7669ecfdc1c9431155922fca4dcfc83b5/v2ray
 			if [ ! -f "/tmp/v2ray" ]; then
 				logger -t "SS" "v2ray二进制文件下载失败，可能是地址失效或者网络异常！"
 				nvram set ss_enable=0
@@ -560,17 +560,13 @@ kill_process() {
 
 # ================================= 重启 SS ===============================
 ressp() {
-	BACKUP_SERVER=$(nvram get backup_server)
-#	GLOBAL_SERVER=`nvram get backup_server`
-	start_redir $BACKUP_SERVER
-	start_rules $BACKUP_SERVER
-#	start_redir
-#	start_rules
+	GLOBAL_SERVER=$(nvram get backup_server)
+	start_redir
+	start_rules
 	start_dns
 	start_local
 	start_watchcat
 	auto_update
-	ENABLE_SERVER=$(nvram get global_server)
 	logger -t "SS" "备用服务器启动成功"
 	logger -t "SS" "内网IP控制为:$lancons"
 }
